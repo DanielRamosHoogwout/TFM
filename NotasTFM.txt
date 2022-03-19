@@ -1,0 +1,3 @@
+Redes neuronales recurrentes para predecir el precio de bitcoin
+Scope: ¿Cuanto tiempo tengo que precedir? Un mes?
+Explicar valores atipicos
