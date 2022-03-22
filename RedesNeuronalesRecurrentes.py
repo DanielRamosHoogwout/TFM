@@ -44,6 +44,34 @@ from keras.layers import Dense, LSTM, Dropout
 regressor = Sequential()
 
 #Aplicar LSTM y Dropout
-regressor.add(LSTM(units = 50, return_sequences = True, input_shape = (X_train.shape[1],1) ))
+
+#Primera capa
+regressor.add(LSTM(units = 50, return_sequences = True, input_shape = (X_train.shape[1], 1)))
 regressor.add(Dropout(0.2)) #20% de las neuronas no se va a utilizar
+
+#Segunda capa
+regressor.add(LSTM(units = 50, return_sequences = True))
+regressor.add(Dropout(0.2)) #20% de las neuronas no se va a utilizar
+
+#Tercera capa
+regressor.add(LSTM(units = 50, return_sequences = True))
+regressor.add(Dropout(0.2)) #20% de las neuronas no se va a utilizar
+
+#Cuarta capa
+regressor.add(LSTM(units = 50, return_sequences = False))
+regressor.add(Dropout(0.2)) #20% de las neuronas no se va a utilizar
+
+#Capa de salida
+regressor.add(Dense(units = 1))
+
+#Compilar
+regressor.compile(optimizer= 'adam', loss = 'mean_squared_error') #Documentación RNR Optimizador: RMSprop vs ADAM adam mejor
+
+#Conjunto entrenamiento
+regressor.fit(X_train, y_train, epochs= 100, batch_size = 32)
+
 #Parte 3 - Ajustar las predicciones y visualizar los resultados
+
+#Cargamos los datos del mes de febrero de 2020
+dataset_test = pd.read_csv("C:/Users/Daniel/Desktop/TFM/Datos/BTC_USD_Test.csv")
+test_set = dataset_test.iloc[:, 1:2].values #Dataframe de 1 columna

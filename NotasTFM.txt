@@ -1,3 +1,5 @@
 Redes neuronales recurrentes para predecir el precio de bitcoin
 Scope: ¿Cuanto tiempo tengo que precedir? Un mes?
 Explicar valores atipicos
+
+Numpy version: 1.18.5 para funcionar con TensorFlow
