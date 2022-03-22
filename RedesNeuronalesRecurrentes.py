@@ -101,3 +101,8 @@ plt.xlabel('Time')
 plt.ylabel('Bitcoin Price')
 plt.legend()
 plt.show()
+
+#Metricas de error
+import math
+from sklearn.metrics import mean_squared_error
+rmse = math.sqrt(mean_squared_error(real_price, predicted_price))
