@@ -74,4 +74,30 @@ regressor.fit(X_train, y_train, epochs= 100, batch_size = 32)
 
 #Cargamos los datos del mes de febrero de 2020
 dataset_test = pd.read_csv("C:/Users/Daniel/Desktop/TFM/Datos/BTC_USD_Test.csv")
-test_set = dataset_test.iloc[:, 1:2].values #Dataframe de 1 columna
+real_price = dataset_test.iloc[:, 1:2].values #Dataframe de 1 columna
+
+#Predecir las acciones de Febrero de 2020
+dataset_total = pd.concat((dataset_train['Open'], dataset_test['Open']), axis = 0)
+inputs  = dataset_total[len(dataset_total)-len(dataset_test)-60: ].values #Formato fila
+inputs = inputs.reshape(-1,1) #Cambiar fila por columna
+inputs = sc.transform(inputs) #Reescalamos los datos (el mínimo y el máximo se han obtenido del sc anterior.)
+
+X_test = []
+for i in range(60, 60+len(dataset_test)): #2618 tendré que cambiarlo por el ultimo dato de train
+    X_test.append(inputs[i-60:i,0])
+
+X_test= np.array(X_test)
+
+X_test = np.reshape(X_test, (X_test.shape[0], X_test.shape[1], 1)) #Tridimensionalizamos
+                    
+predicted_price = regressor.predict(X_test)
+predicted_price = sc.inverse_transform(predicted_price)
+
+#Visualizacion de los datos
+plt.plot(real_price, color = 'red', label = 'Real Bitcoin Price')
+plt.plot(predicted_price, color = 'blue', label = 'Predicted Bitcoin Price')
+plt.title('Bitcoin Price Prediction')
+plt.xlabel('Time')
+plt.ylabel('Bitcoin Price')
+plt.legend()
+plt.show()
