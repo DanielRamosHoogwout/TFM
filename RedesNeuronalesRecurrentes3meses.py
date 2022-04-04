@@ -12,7 +12,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 #Cargar datos
-dataset_train = pd.read_csv("C:/Users/Daniel/Desktop/TFM/Datos/BTC_train_dic2019.csv")
+dataset_train = pd.read_csv("C:/Users/Daniel/Desktop/TFM/Datos/BTC_train_nov2019.csv")
 
 #Se toma solo el valor de apertura
 training_set = dataset_train.iloc[:, 1:2].values #Dataframe de 1 columna
@@ -26,7 +26,7 @@ training_set_scaled = sc.fit_transform(training_set)
 X_train = []
 y_train = []
 
-for i in range(60, 1932): #2618 tendré que cambiarlo por el ultimo dato de train
+for i in range(60, len(training_set)): #2618 tendré que cambiarlo por el ultimo dato de train
     X_train.append(training_set_scaled[i-60:i,0])
     y_train.append(training_set_scaled[i,0])
 
@@ -73,7 +73,7 @@ regressor.fit(X_train, y_train, epochs= 100, batch_size = 32)
 #Parte 3 - Ajustar las predicciones y visualizar los resultados
 
 #Cargamos los datos del mes de febrero de 2020
-dataset_test = pd.read_csv("C:/Users/Daniel/Desktop/TFM/Datos/BTC_test_mar2020.csv")
+dataset_test = pd.read_csv("C:/Users/Daniel/Desktop/TFM/Datos/BTC_test_feb2020.csv")
 real_price = dataset_test.iloc[:, 1:2].values #Dataframe de 1 columna
 
 #Predecir las acciones de Febrero de 2020

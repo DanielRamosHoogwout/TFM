@@ -3,3 +3,9 @@ Scope: ¿Cuanto tiempo tengo que precedir? Un mes?
 Explicar valores atipicos
 
 Numpy version: 1.18.5 para funcionar con TensorFlow
+
+Version precio apertura: 256.42
+Version precio apertura e IBEX: 626.089
+Version apertura y cierre 2 meses: 250.25
+Version apertura 3 meses:  498.594
+Version apertura y cierre 3 meses: 276.33
