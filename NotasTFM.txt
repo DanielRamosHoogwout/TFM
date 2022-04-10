@@ -9,3 +9,4 @@ Version precio apertura e IBEX: 626.089
 Version apertura y cierre 2 meses: 250.25
 Version apertura 3 meses:  498.594
 Version apertura y cierre 3 meses: 276.33
+Version apertura y cierre 3 meses pasos hacia delante: 201.10
