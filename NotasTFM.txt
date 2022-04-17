@@ -1,6 +1,6 @@
 Redes neuronales recurrentes para predecir el precio de bitcoin
-Scope: ¿Cuanto tiempo tengo que precedir? Un mes?
-Explicar valores atipicos
+Scope: ¿Cuanto tiempo tengo que precedir? Tres mes paso a paso
+
 
 Numpy version: 1.18.5 para funcionar con TensorFlow
 
@@ -10,3 +10,4 @@ Version apertura y cierre 2 meses: 250.25
 Version apertura 3 meses:  498.594
 Version apertura y cierre 3 meses: 276.33
 Version apertura y cierre 3 meses pasos hacia delante: 201.10
+Version apertura y cierre 3 meses pasos hacia delante con vista a 3 meses atrás: 182.17

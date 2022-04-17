@@ -15,21 +15,23 @@ import matplotlib.pyplot as plt
 dataset_train = pd.read_csv("C:/Users/Daniel/Desktop/TFM/Datos/BTC_train_nov2019.csv")
 
 #Se toma solo el valor de apertura
-training_set = dataset_train.iloc[:, [1,4]].values #Dataframe de 1 columna
+training_set = dataset_train.iloc[:, [1,4]].values #Dataframe de 2 columna
 
 #Escalado de características
 from sklearn.preprocessing import MinMaxScaler
 sc = MinMaxScaler(feature_range = (0,1))
 training_set_scaled = sc.fit_transform(training_set)
 
-# Crear una estrucutra de datos con 60 timesteps y 1 salida
+# Crear una estrucutra de datos con period timesteps y 1 salida
 X_train = []
 X_train2 = []
 y_train = []
 
-for i in range(60, len(training_set)): #2618 tendré que cambiarlo por el ultimo dato de train
-    X_train.append(training_set_scaled[i-60:i,0])
-    X_train2.append(training_set_scaled[i-60:i,1])
+period = 90
+
+for i in range(period, len(training_set)): #2618 tendré que cambiarlo por el ultimo dato de train
+    X_train.append(training_set_scaled[i-period:i,0])
+    X_train2.append(training_set_scaled[i-period:i,1])
     y_train.append(training_set_scaled[i,0])
 
 X_train, X_train2, y_train = np.array(X_train), np.array(X_train2), np.array(y_train)
@@ -85,15 +87,15 @@ real_price = dataset_test.iloc[:, [1,4]].values #Dataframe de 1 columna
 
 #Predecir las acciones de enero-marzo de 2020
 dataset_total = pd.concat((dataset_train[['Open','Close']], dataset_test[['Open','Close']]), axis = 0)
-inputs  = dataset_total[len(dataset_total)-len(dataset_test)-60: ].values #Formato fila
+inputs  = dataset_total[len(dataset_total)-len(dataset_test)-period: ].values #Formato fila
 
 inputs = sc.transform(inputs) #Reescalamos los datos (el mínimo y el máximo se han obtenido del sc anterior.)
 
 X_test = []
 X_test2 = []
-for i in range(60, 60+len(dataset_test)):
-    X_test.append(inputs[i-60:i,0])
-    X_test2.append(inputs[i-60:i,1])
+for i in range(period, period+len(dataset_test)):
+    X_test.append(inputs[i-period:i,0])
+    X_test2.append(inputs[i-period:i,1])
 
 X_test, X_test2= np.array(X_test), np.array(X_test2)
 
