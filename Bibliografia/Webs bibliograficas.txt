@@ -1,0 +1,4 @@
+http://karpathy.github.io/2015/05/21/rnn-effectiveness/ - The Unreasonable Effectiveness of Recurrent Neural Networks
+https://www.superdatascience.com/blogs/the-ultimate-guide-to-recurrent-neural-networks-rnn - The Ultimate Guide to Recurrent Neural Networks
+http://colah.github.io/posts/2015-08-Understanding-LSTMs/ - Understanding LSTM Networks
+https://blog.mlreview.com/understanding-lstm-and-its-diagrams-37e2f46f1714 - Understanding LSTM and its diagrams

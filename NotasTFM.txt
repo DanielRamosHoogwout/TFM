@@ -11,3 +11,8 @@ Version apertura 3 meses:  498.594
 Version apertura y cierre 3 meses: 276.33
 Version apertura y cierre 3 meses pasos hacia delante: 201.10
 Version apertura y cierre 3 meses pasos hacia delante con vista a 3 meses atrás: 182.17
+Version apertura y cierre 3 meses pasos hacia delante con vista a 3 meses atrás con 1000 epochs: 111.17 
+EPOCH:842  RMSE: 102.92
+EPOCH 721: RMSE: 59.87 Lowest Loss: 0.00026563479332253337
+
+En teoria index 743 lowest loss 0.0002537
