@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Trabajo Final de Máster:
-    Redes Neuronales Recurrentes aplicadas a criptomonedas.
+    Redes Neuronales Recurrentes aplicadas a criptomonedas
 """
 
 # Parte 1 - Preprocesado de datos
@@ -10,12 +10,17 @@ Trabajo Final de Máster:
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import tensorflow as tf
+
+# settingt he seed
+np.random.seed(0)
+tf.random.set_seed(0)
 
 #Cargar datos
-dataset_train = pd.read_csv("C:/Users/Daniel/Desktop/TFM/Datos/BTC_train_dic2019.csv")
+dataset_train = pd.read_csv("C:/Users/Daniel/Desktop/TFM/Datos/BTC_train_nov2019.csv")
 
 #Se toma solo el valor de apertura
-training_set = dataset_train.iloc[:, [1,4]].values #Dataframe de 1 columna
+training_set = dataset_train.iloc[:, [1,4]].values #Dataframe de 2 columna
 
 #Escalado de características
 from sklearn.preprocessing import MinMaxScaler
@@ -74,15 +79,31 @@ regressor.add(Dropout(0.2)) #20% de las neuronas no se va a utilizar
 regressor.add(Dense(units = 1))
 
 #Compilar
-regressor.compile(optimizer= 'adam', loss = 'mean_squared_error') #Documentación RNR Optimizador: RMSprop vs ADAM adam mejor
+regressor.compile(optimizer= 'adam', loss = 'mean_squared_error', metrics=['mae']) #Documentación RNR Optimizador: RMSprop vs ADAM adam mejor
 
-#Conjunto entrenamiento
-regressor.fit(X_train, y_train, epochs= 100, batch_size = 32)
+from keras.callbacks import EarlyStopping
+es = EarlyStopping(monitor = 'loss', mode = 'min', verbose = 1, patience=10, restore_best_weights=True)   
+#Conjunto entrenamiento recursivo
+history = regressor.fit(X_train, y_train, epochs= 100, batch_size = 32, callbacks = [es])
+
+#Observamos si los parametros del modelo son optimos
+
+
+# summarize history for loss
+
+plt.plot(history.history['loss'])
+#plt.plot(min(history.history['loss']), marker="o")
+#plt.plot(history.history['val_loss'])
+plt.title('Ritmo de aprendizaje')
+plt.ylabel('Loss')
+plt.xlabel('Epoch')
+#plt.legend(['train', 'test'], loc='upper left')
+plt.show()
 
 #Parte 3 - Ajustar las predicciones y visualizar los resultados
 
 #Cargamos los datos del mes de enero-marzo de 2020
-dataset_test = pd.read_csv("C:/Users/Daniel/Desktop/TFM/Datos/BTC_test_mar2020.csv")
+dataset_test = pd.read_csv("C:/Users/Daniel/Desktop/TFM/Datos/BTC_test_feb2020.csv")
 real_price = dataset_test.iloc[:, [1,4]].values #Dataframe de 1 columna
 
 #Predecir las acciones de enero-marzo de 2020
@@ -93,7 +114,7 @@ inputs = sc.transform(inputs) #Reescalamos los datos (el mínimo y el máximo se
 
 X_test = []
 X_test2 = []
-for i in range(period, period+len(dataset_test)): #2618 tendré que cambiarlo por el ultimo dato de train
+for i in range(period, period+len(dataset_test)):
     X_test.append(inputs[i-period:i,0])
     X_test2.append(inputs[i-period:i,1])
 
@@ -104,22 +125,73 @@ X_test2 = np.reshape(X_test2, (X_test2.shape[0], X_test2.shape[1], 1))
 
 #Unimos
 X_test = np.append(X_test, X_test2, axis = 2)
-                    
+
+#Predecimos el precio
+
 predicted_price = regressor.predict(X_test)
-predicted_price = np.append(predicted_price, ([[0]]*91), axis = 1)
+predicted_price = np.append(predicted_price, ([[0]]*(91)), axis = 1)
 predicted_price = sc.inverse_transform(predicted_price)
 
 #Visualizacion de los datos
-plt.plot(real_price[ : , 0], color = 'red', label = 'Real Bitcoin Price')
-plt.plot(predicted_price[ : , 0], color = 'blue', label = 'Predicted Bitcoin Price')
-plt.title('Bitcoin Price Prediction')
-plt.xlabel('Time')
-plt.ylabel('Bitcoin Price')
+plt.plot(real_price[ : , 0], color = 'red', label = 'Precio Real del Bitcoin')
+plt.plot(predicted_price[ : , 0], color = 'blue', label = 'Precio estimado del Bitcoin')
+plt.title('Predicción del precio del Bitcoin')
+plt.xlabel('Dias')
+plt.ylabel('Precio del Bitcoin')
 plt.legend()
 plt.show()
 
 #Metricas de error
 import math
 from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_absolute_error
 rmse = math.sqrt(mean_squared_error(real_price[:,0], predicted_price[:,0]))
-print(rmse)
+mae = mean_absolute_error(real_price[:,0], predicted_price[:,0])
+print("RMSE:", rmse)
+print("MAE:", mae)
+
+#Vamos a validar este modelo
+
+#Cargamos los datos de validación 1 de junio 21 hasta 27 nov 22
+dataset_val = pd.read_csv("C:/Users/Daniel/Desktop/TFM/Datos/BTC_val.csv")
+real_price = dataset_val.iloc[:, [1,4]].values #Dataframe de 1 columna
+real_price = real_price[period:period*2]
+
+dataset_val = dataset_val[['Open','Close']]
+inputs  = dataset_val[:len(dataset_val)].values #Formato fila
+inputs = sc.transform(inputs) #Reescalamos los datos (el mínimo y el máximo se han obtenido del sc anterior.)
+
+X_val = []
+X_val2 = []
+for i in range(0, period):
+    X_val.append(inputs[i:i+period,0])
+    X_val2.append(inputs[i:i+period,1])
+
+X_val, X_val2= np.array(X_val), np.array(X_val2)
+
+X_val = np.reshape(X_val, (X_val.shape[0], X_val.shape[1], 1)) #Tridimensionalizamos
+X_val2 = np.reshape(X_val2, (X_val2.shape[0], X_val2.shape[1], 1))
+
+#Unimos
+X_val = np.append(X_val, X_val2, axis = 2)
+
+#Predecimos el precio
+
+predicted_price = regressor.predict(X_val)
+predicted_price = np.append(predicted_price, ([[0]]*period), axis = 1)
+predicted_price = sc.inverse_transform(predicted_price)
+
+#Visualizacion de los datos
+
+plt.plot(real_price[ : , 0], color = 'red', label = 'Precio Real del Bitcoin')
+plt.plot(predicted_price[ : , 0], color = 'blue', label = 'Precio estimado del Bitcoin')
+plt.title('Predicción del precio del Bitcoin')
+plt.xlabel('Dias')
+plt.ylabel('Precio del Bitcoin')
+plt.legend()
+plt.show()
+
+rmse = math.sqrt(mean_squared_error(real_price[:,0], predicted_price[:,0]))
+mae = mean_absolute_error(real_price[:,0], predicted_price[:,0])
+print("RMSE:", rmse)
+print("MAE:", mae)

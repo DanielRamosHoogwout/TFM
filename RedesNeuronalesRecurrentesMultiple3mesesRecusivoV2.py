@@ -77,9 +77,9 @@ regressor.add(Dense(units = 1))
 regressor.compile(optimizer= 'adam', loss = 'mean_squared_error') #Documentación RNR Optimizador: RMSprop vs ADAM adam mejor
 
 from keras.callbacks import EarlyStopping
-es = EarlyStopping(monitor = 'loss', mode = 'min', verbose = 1, patience=100, restore_best_weights=True)   
+es = EarlyStopping(monitor = 'loss', mode = 'min', verbose = 1, patience=10, restore_best_weights=True)   
 #Conjunto entrenamiento recursivo
-history = regressor.fit(X_train, y_train, epochs= 1000, batch_size = 32, callbacks = [es])
+history = regressor.fit(X_train, y_train, epochs= 100, batch_size = 32, callbacks = [es])
 
 
 #Observamos si los parametros del modelo son optimos
@@ -90,9 +90,9 @@ print(history.history.keys())
 plt.plot(history.history['loss'])
 #plt.plot(min(history.history['loss']), marker="o")
 #plt.plot(history.history['val_loss'])
-plt.title('model loss')
-plt.ylabel('loss')
-plt.xlabel('epoch')
+plt.title('Ritmo de aprendizaje')
+plt.ylabel('Loss')
+plt.xlabel('Epoch')
 #plt.legend(['train', 'test'], loc='upper left')
 plt.show()
 
@@ -130,11 +130,11 @@ for j in range(len(X_test)):
 predicted_price_list = sc.inverse_transform(predicted_price_list)
 
 #Visualizacion de los datos
-plt.plot(real_price[ : , 0], color = 'red', label = 'Real Bitcoin Price')
-plt.plot(predicted_price_list[ : , 0], color = 'blue', label = 'Predicted Bitcoin Price')
-plt.title('Bitcoin Price Prediction')
-plt.xlabel('Time')
-plt.ylabel('Bitcoin Price')
+plt.plot(real_price[ : , 0], color = 'red', label = 'Precio Real del Bitcoin')
+plt.plot(predicted_price_list[ : , 0], color = 'blue', label = 'Precio estimado del Bitcoin')
+plt.title('Predicción del precio del Bitcoin')
+plt.xlabel('Dias')
+plt.ylabel('Precio del Bitcoin')
 plt.legend()
 plt.show()
 

@@ -12,10 +12,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 #Cargar datos
-dataset_train = pd.read_csv("C:/Users/Daniel/Desktop/TFM/Datos/BTC_train_dic2019.csv")
+dataset_train = pd.read_csv("C:/Users/Daniel/Desktop/TFM/Datos/BTC_train_nov2019.csv")
 
 #Se toma solo el valor de apertura
-training_set = dataset_train.iloc[:, [1,4]].values #Dataframe de 1 columna
+training_set = dataset_train.iloc[:, [1,4]].values #Dataframe de 2 columna
 
 #Escalado de características
 from sklearn.preprocessing import MinMaxScaler
@@ -76,13 +76,30 @@ regressor.add(Dense(units = 1))
 #Compilar
 regressor.compile(optimizer= 'adam', loss = 'mean_squared_error') #Documentación RNR Optimizador: RMSprop vs ADAM adam mejor
 
-#Conjunto entrenamiento
-regressor.fit(X_train, y_train, epochs= 100, batch_size = 32)
+from keras.callbacks import EarlyStopping
+es = EarlyStopping(monitor = 'loss', mode = 'min', verbose = 1, patience=25, restore_best_weights=True)   
+#Conjunto entrenamiento recursivo
+history = regressor.fit(X_train, y_train, epochs= 1000, batch_size = 32, callbacks = [es])
+
+
+#Observamos si los parametros del modelo son optimos
+
+
+# summarize history for loss
+print(history.history.keys())
+plt.plot(history.history['loss'])
+#plt.plot(min(history.history['loss']), marker="o")
+#plt.plot(history.history['val_loss'])
+plt.title('model loss')
+plt.ylabel('loss')
+plt.xlabel('epoch')
+#plt.legend(['train', 'test'], loc='upper left')
+plt.show()
 
 #Parte 3 - Ajustar las predicciones y visualizar los resultados
 
 #Cargamos los datos del mes de enero-marzo de 2020
-dataset_test = pd.read_csv("C:/Users/Daniel/Desktop/TFM/Datos/BTC_test_mar2020.csv")
+dataset_test = pd.read_csv("C:/Users/Daniel/Desktop/TFM/Datos/BTC_test_feb2020.csv")
 real_price = dataset_test.iloc[:, [1,4]].values #Dataframe de 1 columna
 
 #Predecir las acciones de enero-marzo de 2020
@@ -93,7 +110,7 @@ inputs = sc.transform(inputs) #Reescalamos los datos (el mínimo y el máximo se
 
 X_test = []
 X_test2 = []
-for i in range(period, period+len(dataset_test)): #2618 tendré que cambiarlo por el ultimo dato de train
+for i in range(period, period+len(dataset_test)):
     X_test.append(inputs[i-period:i,0])
     X_test2.append(inputs[i-period:i,1])
 
@@ -104,10 +121,25 @@ X_test2 = np.reshape(X_test2, (X_test2.shape[0], X_test2.shape[1], 1))
 
 #Unimos
 X_test = np.append(X_test, X_test2, axis = 2)
-                    
+
 predicted_price = regressor.predict(X_test)
 predicted_price = np.append(predicted_price, ([[0]]*91), axis = 1)
 predicted_price = sc.inverse_transform(predicted_price)
+prediced_price_list = []
+for j in range(len(X_test)):
+    predicted_price = regressor.predict(X_test, batch_size=1)
+    predicted_price_list = np.append(predicted_price, ([[0]]*91), axis = 1)
+
+predicted_price_list = sc.inverse_transform(predicted_price_list)
+
+#Visualizacion de los datos
+plt.plot(real_price[ : , 0], color = 'red', label = 'Real Bitcoin Price')
+plt.plot(predicted_price_list[ : , 0], color = 'blue', label = 'Predicted Bitcoin Price')
+plt.title('Bitcoin Price Prediction')
+plt.xlabel('Time')
+plt.ylabel('Bitcoin Price')
+plt.legend()
+plt.show()
 
 #Visualizacion de los datos
 plt.plot(real_price[ : , 0], color = 'red', label = 'Real Bitcoin Price')
@@ -121,5 +153,5 @@ plt.show()
 #Metricas de error
 import math
 from sklearn.metrics import mean_squared_error
-rmse = math.sqrt(mean_squared_error(real_price[:,0], predicted_price[:,0]))
+rmse = math.sqrt(mean_squared_error(real_price[:,0], predicted_price_list[:,0]))
 print(rmse)
