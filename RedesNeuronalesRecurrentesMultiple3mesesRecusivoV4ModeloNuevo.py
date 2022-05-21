@@ -34,7 +34,7 @@ y_train = []
 
 period = 90
 
-for i in range(period, len(training_set)): #2618 tendré que cambiarlo por el ultimo dato de train
+for i in range(period, len(training_set)):
     X_train.append(training_set_scaled[i-period:i,0])
     X_train2.append(training_set_scaled[i-period:i,1])
     y_train.append(training_set_scaled[i,0])
