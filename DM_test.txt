@@ -1,0 +1,26 @@
+#DM test
+library(forecast)
+
+error_30 <- read.csv("C:/Users/Daniel/Desktop/TFM/error_30.csv")
+error_30 <- error_30[['Data']]
+
+error_60 <- read.csv("C:/Users/Daniel/Desktop/TFM/error_60.csv")
+error_60 <- error_60[['Data']]
+
+error_90 <- read.csv("C:/Users/Daniel/Desktop/TFM/error_90.csv")
+error_90 <- error_90[['Data']]
+
+error_120 <- read.csv("C:/Users/Daniel/Desktop/TFM/error_120.csv")
+error_120 <- error_120[['Data']]
+
+dm_30_60 <- dm.test
+
+dm_30_90
+
+dm_30_120
+
+dm_60_90
+
+dm_60_120
+
+dm_90_120
