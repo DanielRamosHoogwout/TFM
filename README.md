@@ -10,7 +10,7 @@ All the prediction is done in Python using Keras, a special environment has to b
 Only Keras, Tensorflow and Numpy should be installed in this environment to avoid problems, the rest of the dependencies will be downloaded automatically.
 
 #### **R**
-In this study the Diebold-Mariano test is used. The best package available to do this test is forecast on R so the data obtained through Python was then exported and used in R. Only this test was done through a small script called DMtest_corregido.txt
+In this study the Diebold-Mariano test is used. The best package available to do this test is forecast on R so the data obtained through Python was then exported and used in R. Only this test was done through a small script called DMtest_corregido.R
 
 
 ### Important files
