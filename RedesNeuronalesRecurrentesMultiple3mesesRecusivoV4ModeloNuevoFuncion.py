@@ -32,7 +32,7 @@ X_train = []
 X_train2 = []
 y_train = []
 
-period = 30
+period = 90
 days = 90
 
 for i in range(period, len(training_set)):
@@ -95,8 +95,8 @@ history = regressor.fit(X_train, y_train, epochs= 100, batch_size = 32, callback
 plt.plot(history.history['loss'])
 #plt.plot(min(history.history['loss']), marker="o")
 #plt.plot(history.history['val_loss'])
-plt.title('Ritmo de aprendizaje')
-plt.ylabel('Loss')
+#plt.title('Ritmo de aprendizaje')
+plt.ylabel('Pérdida')
 plt.xlabel('Epoch')
 #plt.legend(['train', 'test'], loc='upper left')
 plt.show()
@@ -153,7 +153,7 @@ print("MAE:", mae)
 
 #Vamos a validar este modelo
 
-#Cargamos los datos de validación 1 de junio 21 hasta 27 nov 22
+#Cargamos los datos de validación 1 de marzo 21 hasta 27 nov 22
 dataset_val = pd.read_csv("C:/Users/Daniel/Desktop/TFM/Datos/BTC_val.csv")
 real_price = dataset_val.iloc[:, [1,4]].values #Dataframe de 1 columna
 real_price = real_price[days:days*2]
