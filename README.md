@@ -14,7 +14,11 @@ In this study the Diebold-Mariano test is used. The best package available to do
 
 
 ### Important files
-I have shared all of the scripts just to see the evolution of the model but the final model is acomplished through the folling script: **RedesNeuronalesRecurrentesMultiple3mesesRecusivoV4ModeloNuevoFuncion.py** were there are 2 parameters called *period* and *days* can be changed change the rolling window size and the prediction period. As this was done quickly to test the LSTM no function as been build.
+I have shared all of the scripts just to see the evolution of the model but the final model is acomplished through the folling script: **LSTM_90_days_rolling_window.py** were there are 2 parameters called *period* and *days* can be changed change the rolling window size (*period*) and the prediction period (*days*). For this study the parameter *days* will stay always the same 90 has the prediction period will always be 90 days.
+
+The rest of the files located in the main folder are a copy of this script changing the values of the *period* parameter for 30, 60 and 120.
+
+As this was done quickly to test the LSTM no function as been build.
 
 A couple of variables, normally ended in 30, 60, 90, 120 shoud be renamed if the previous parameters are changed. This is clearly visible in the last lines were the values for the DM test are obtained.
 
