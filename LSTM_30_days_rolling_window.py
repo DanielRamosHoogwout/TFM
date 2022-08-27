@@ -32,8 +32,8 @@ X_train = []
 X_train2 = []
 y_train = []
 
-period = 90
-days = 90
+period = 30 #tamaño de la "rolling window"
+days = 90 #numero de dias que se va a predecir
 
 for i in range(period, len(training_set)):
     X_train.append(training_set_scaled[i-period:i,0])
@@ -142,7 +142,7 @@ plt.ylabel('Precio del Bitcoin')
 plt.legend()
 plt.show()
 
-#Metricas de error
+#Metricas de error en la fase de test Tabla 1
 import math
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import mean_absolute_error
@@ -192,12 +192,13 @@ plt.ylabel('Precio del Bitcoin')
 plt.legend()
 plt.show()
 
+#Metricas de error en la fase de validacion Tabla 2
 rmse = math.sqrt(mean_squared_error(real_price[:,0], predicted_price[:,0]))
 mae = mean_absolute_error(real_price[:,0], predicted_price[:,0])
 print("RMSE:", rmse)
 print("MAE:", mae)
 
-#Ver los errores para DM
+#Ver los errores para DM test
 real_price = real_price[:,0].tolist()
 predicted_price = predicted_price[:,0].tolist()
 forecast_errors_30 = [real_price[j]-predicted_price[j] for j in range(len(real_price))]
@@ -205,7 +206,4 @@ print(forecast_errors_30)
 
 df_30 = pd.DataFrame(forecast_errors_30)
 df_30.to_csv('C:/Users/Daniel/Desktop/TFM/error_30.csv', index=False, header = ["Data"])
-
-dataset_30 = pd.read_csv("C:/Users/Daniel/Desktop/TFM/error_30.csv")
-list_30 = dataset_30['Data'].values.tolist()
 
