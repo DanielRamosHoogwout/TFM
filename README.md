@@ -10,15 +10,15 @@ All the prediction is done in Python using Keras, a special environment has to b
 Only Keras, Tensorflow and Numpy should be installed in this environment to avoid problems, the rest of the dependencies will be downloaded automatically.
 
 #### **R**
-In this study the Diebold-Mariano test is used. The best package available to do this test is forecast on R so the data obtained through Python was then exported and used in R. Only this test was done through a small script called DMtest_corregido.R
+In this study the Diebold-Mariano test is used. The best package available to do this test is *forecast* on R so the data obtained through Python was then exported and used in R. Only this test was done through a small script called DMtest_corregido.R
 
 
 ### Important files
-I have shared all of the scripts just to see the evolution of the model but the final model is acomplished through the folling script: **LSTM_90_days_rolling_window.py** were there are 2 parameters called *period* and *days* can be changed change the rolling window size (*period*) and the prediction period (*days*). For this study the parameter *days* will stay always the same 90 has the prediction period will always be 90 days.
+I have shared all of the scripts just to see the evolution of the model but the final model is acomplished through the folling script: **LSTM_90_days_rolling_window.py** were there are 2 parameters called *period* and *days* can be changed change the rolling window size (*period*) and the prediction period (*days*). For this study the parameter *days* will stay always the same as the prediction period will always be 90 days.
 
 The rest of the files located in the main folder are a copy of this script changing the values of the *period* parameter for 30, 60 and 120.
 
-As this was done quickly to test the LSTM no function as been build.
+As this was done quickly to test the LSTM capabilities no function as been build.
 
 A couple of variables, normally ended in 30, 60, 90, 120 shoud be renamed if the previous parameters are changed. This is clearly visible in the last lines were the values for the DM test are obtained.
 
