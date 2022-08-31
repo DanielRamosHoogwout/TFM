@@ -18,6 +18,8 @@ I have shared all of the scripts just to see the evolution of the model but the 
 
 The rest of the files located in the main folder are a copy of this script changing the values of the *period* parameter for 30, 60 and 120.
 
+For the 120 days model another .csv is used as the first data file (**BTC_val.csv**) had not enough data point at the beggining, so 30 more days had been added in the **BTC_val120.csv** to be able to use rolling window properly.
+
 As this was done quickly to test the LSTM capabilities no function as been build.
 
 A couple of variables, normally ended in 30, 60, 90, 120 shoud be renamed if the previous parameters are changed. This is clearly visible in the last lines were the values for the DM test are obtained.
