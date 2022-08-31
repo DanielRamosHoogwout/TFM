@@ -103,11 +103,11 @@ plt.show()
 
 #Parte 3 - Ajustar las predicciones y visualizar los resultados
 
-#Cargamos los datos del mes de enero-marzo de 2020
+#Cargamos los datos de 2020
 dataset_test = pd.read_csv("C:/Users/Daniel/Desktop/TFM/Datos/BTC_test_feb2020.csv")
 real_price = dataset_test.iloc[:, [1,4]].values #Dataframe de 1 columna
 
-#Predecir las acciones de enero-marzo de 2020
+#Predecir las acciones de 2020
 dataset_total = pd.concat((dataset_train[['Open','Close']], dataset_test[['Open','Close']]), axis = 0)
 inputs  = dataset_total[len(dataset_total)-len(dataset_test)-period: ].values #Formato fila
 
@@ -153,10 +153,10 @@ print("MAE:", mae)
 
 #Vamos a validar este modelo
 
-#Cargamos los datos de validación 1 de marzo 21 hasta 27 nov 22
-dataset_val = pd.read_csv("C:/Users/Daniel/Desktop/TFM/Datos/BTC_val.csv")
+#Cargamos los datos de validación 1 de febrero 21 hasta 27 nov 22
+dataset_val = pd.read_csv("C:/Users/Daniel/Desktop/TFM/Datos/BTC_val120.csv")
 real_price = dataset_val.iloc[:, [1,4]].values #Dataframe de 1 columna
-real_price = real_price[days:days*2]
+real_price = real_price[days+30:(days*2)+30]
 
 dataset_val = dataset_val[['Open','Close']]
 inputs  = dataset_val[:len(dataset_val)].values #Formato fila
